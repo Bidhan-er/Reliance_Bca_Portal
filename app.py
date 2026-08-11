@@ -16,17 +16,13 @@ from database import (
 )
 from email_utils import send_otp_email
 
-# ════════════════════════════════════════════════════════════
-#  MUST BE THE VERY FIRST STREAMLIT COMMAND IN THE SCRIPT
-# ════════════════════════════════════════════════════════════
+
 st.set_page_config(page_title="BCA Student Portal", page_icon="🎓",
                    layout="wide", initial_sidebar_state="collapsed")
 
 init_db()
 
-# ════════════════════════════════════════════════════════════
-#  SPLASH / LOADING SCREEN (runs once per session)
-# ════════════════════════════════════════════════════════════
+
 if "loaded" not in st.session_state:
     st.session_state.loaded = False
 
@@ -109,9 +105,7 @@ if not st.session_state.loaded:
     st.session_state.loaded = True
     st.rerun()
 
-# ════════════════════════════════════════════════════════════
-#  GLOBAL STYLES
-# ════════════════════════════════════════════════════════════
+
 st.markdown("""
 <style>
 [data-testid="stAppViewContainer"] { background:#f0f4f8; }
@@ -699,9 +693,8 @@ def page_admin_settings():
                         st.success("✅ Admin password updated!")
 
 
-# ════════════════════════════════════════════════════════════
 #  ROUTER
-# ════════════════════════════════════════════════════════════
+
 STUDENT_PAGES = {
     "login":        page_student_login,
     "first_change": page_first_change,
