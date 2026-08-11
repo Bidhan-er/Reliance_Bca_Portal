@@ -1,6 +1,4 @@
-"""
-email_utils.py  –  Gmail SMTP OTP sender
-"""
+
 import smtplib, os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart

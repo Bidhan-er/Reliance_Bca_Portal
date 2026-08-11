@@ -1,14 +1,4 @@
-"""
-import_students.py
-─────────────────
-Reads the BCA Excel file (all semesters) and imports every student
-into MySQL, then auto-generates username + default password.
 
-Usage:
-    python import_students.py --file BCA_Semester_1_to_8_Student_Table_csv.xlsx
-
-For future batches, just run again – existing rows are updated (upsert).
-"""
 import argparse
 import sys
 import pandas as pd
