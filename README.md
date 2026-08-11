@@ -39,15 +39,13 @@ Edit `.env`:
 ```
 DB_HOST=localhost
 DB_PORT=3306
-DB_NAME=bca_portal
+DB_NAME=........
 DB_USER=root
-DB_PASSWORD=your_mysql_password
+DB_PASSWORD=[not mention]
 
 EMAIL_SENDER=your_gmail@gmail.com
 EMAIL_PASSWORD=your_gmail_app_password   # Gmail App Password
 
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=Admin@1234
 ```
 > For Gmail App Password: Google Account → Security → 2-Step Verification → App Passwords
 
