@@ -20,7 +20,12 @@ from email_utils import send_otp_email
 st.set_page_config(page_title="BCA Student Portal", page_icon="🎓",
                    layout="wide", initial_sidebar_state="collapsed")
 
-init_db()
+try:
+    init_db()
+except Exception as e:
+    st.error("Database connection failed")
+    st.exception(e)
+    st.stop()
 
 
 if "loaded" not in st.session_state:
