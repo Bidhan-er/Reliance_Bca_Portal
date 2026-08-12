@@ -78,9 +78,20 @@ def _get_pool():
         ca_path = _resolve_ssl_ca()
 
         if ca_path:
+            # Full validation: encrypt AND verify the server cert against
+            # Aiven's CA.
             pool_kwargs.update(
                 ssl_ca=ca_path,
                 ssl_verify_cert=True,
+            )
+        else:
+            # No CA available. Explicitly disable cert verification so the
+            # connector doesn't fall back to SSL_CTX_set_default_verify_paths(),
+            # which fails on Streamlit Cloud's container (no system CA store).
+            # The connection is still TLS-encrypted since Aiven requires it -
+            # just without verifying the server's identity.
+            pool_kwargs.update(
+                ssl_verify_cert=False,
             )
 
         _pool = pooling.MySQLConnectionPool(**pool_kwargs)
