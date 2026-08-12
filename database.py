@@ -73,6 +73,12 @@ def _get_pool():
             password=get_config("DB_PASSWORD", ""),
             autocommit=False,
             charset="utf8mb4",
+            # The default C extension calls SSL_CTX_set_default_verify_paths()
+            # unconditionally on some platforms, which crashes on containers
+            # without a system CA store (e.g. Streamlit Cloud). The pure-Python
+            # implementation uses Python's own ssl module instead and doesn't
+            # have this issue.
+            use_pure=True,
         )
 
         ca_path = _resolve_ssl_ca()
