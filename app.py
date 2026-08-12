@@ -48,10 +48,16 @@ if not st.session_state.loaded:
         col1, col2, col3, col4 = st.columns([2, 2, 1, 4])
 
         with col3:
-            st.image(
-                "images/img.png",
-                width=250
-            )
+            try:
+                st.image(
+                    "images/img.png",
+                    width=250
+                )
+            except Exception:
+                st.markdown(
+                    "<h1 style='text-align:center;'>🎓</h1>",
+                    unsafe_allow_html=True
+                )
 
         # SPAAMS Title
         st.markdown(

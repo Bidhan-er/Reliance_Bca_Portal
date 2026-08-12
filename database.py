@@ -6,6 +6,7 @@ import os
 import bcrypt
 import random
 import string
+import tempfile
 from datetime import datetime, timedelta
 
 import streamlit as st
@@ -30,13 +31,39 @@ def get_config(key, default=None):
         return os.getenv(key, default)
 
 _pool = None
+_ssl_ca_path = None
+
+
+def _resolve_ssl_ca():
+    """
+    Aiven MySQL requires TLS. The CA certificate is stored as a secret
+    (DB_SSL_CA, the full contents of ca.pem) and written to a temp file
+    at startup, since Streamlit Cloud's filesystem is ephemeral and we
+    can't commit the cert to the repo.
+    """
+    global _ssl_ca_path
+
+    if _ssl_ca_path:
+        return _ssl_ca_path
+
+    ca_contents = get_config("DB_SSL_CA")
+
+    if not ca_contents:
+        return None
+
+    fd, path = tempfile.mkstemp(prefix="aiven_ca_", suffix=".pem")
+    with os.fdopen(fd, "w") as f:
+        f.write(ca_contents)
+
+    _ssl_ca_path = path
+    return _ssl_ca_path
 
 
 def _get_pool():
     global _pool
 
     if _pool is None:
-        _pool = pooling.MySQLConnectionPool(
+        pool_kwargs = dict(
             pool_name="bca_pool",
             pool_size=5,
             host=get_config("DB_HOST", "localhost"),
@@ -47,6 +74,16 @@ def _get_pool():
             autocommit=False,
             charset="utf8mb4",
         )
+
+        ca_path = _resolve_ssl_ca()
+
+        if ca_path:
+            pool_kwargs.update(
+                ssl_ca=ca_path,
+                ssl_verify_cert=True,
+            )
+
+        _pool = pooling.MySQLConnectionPool(**pool_kwargs)
 
     return _pool
 
