@@ -67,17 +67,13 @@ def _get_pool():
             pool_name="bca_pool",
             pool_size=5,
             host=get_config("DB_HOST", "localhost"),
-            port=int(str(get_config("DB_PORT", "12462")).strip()),
+            port=int(get_config("DB_PORT", 3306)),
             database=get_config("DB_NAME", "bca_portal"),
             user=get_config("DB_USER", "root"),
             password=get_config("DB_PASSWORD", ""),
             autocommit=False,
             charset="utf8mb4",
-            # The default C extension calls SSL_CTX_set_default_verify_paths()
-            # unconditionally on some platforms, which crashes on containers
-            # without a system CA store (e.g. Streamlit Cloud). The pure-Python
-            # implementation uses Python's own ssl module instead and doesn't
-            # have this issue.
+
             use_pure=True,
         )
 
