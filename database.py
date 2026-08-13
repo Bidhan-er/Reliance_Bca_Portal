@@ -67,7 +67,7 @@ def _get_pool():
             pool_name="bca_pool",
             pool_size=5,
             host=get_config("DB_HOST", "localhost"),
-            port=int(get_config("DB_PORT", 3306)),
+            port=int(str(get_config("DB_PORT", "12462")).strip()),
             database=get_config("DB_NAME", "bca_portal"),
             user=get_config("DB_USER", "root"),
             password=get_config("DB_PASSWORD", ""),
